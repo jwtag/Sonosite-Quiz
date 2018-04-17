@@ -6,7 +6,7 @@ Write a program or script (Pick you programming/scripting language), that parses
 
 1. Sorts the list by youngest president to join office and outputs youngest_president.txt
 2. Sorts the list by the age when they died and outputs president_longevity.txt
-3. Find the number of presidents whose names have the letter "a" and "m" appear next to each other and create a histogram of occurance of "am", and "ma".
+3. Find the number of presidents whose names have the letter "a" and "m" appear next to each other and create a histogram of occurrences of "am", and "ma".
 
 
 What we will be looking for is how you approach the problem, and how you test your solution.
