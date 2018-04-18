@@ -171,13 +171,13 @@ public class Test {
 		 * Tests compareTo().
 		 */
 		President pGreater = new President("a", "b", 0, 10000, "1/1/0001", "1/1/1009"); //Greater in every way than pLesser.
-		President pLesser = new President("a", "b", 5, 10, "1/1/0008", "1/1/1009"); //Lesser in every way than pGreater.
+		President pLesser = new President("a", "b", 5, 10, "1/1/0008", "1/1/0009"); //Lesser in every way than pGreater.
 		
 		//Test compareTo() using longevity.
 		pGreater.setToCompareByLongevity();
 		pLesser.setToCompareByLongevity();
-		assertTrue("Failed longevity true test.", pGreater.compareTo(pLesser) == 1);
-		assertTrue("Failed longevity false test.", pLesser.compareTo(pGreater) == -1);
+		assertTrue("Failed longevity true test.", pGreater.compareTo(pLesser) == -1);
+		assertTrue("Failed longevity false test.", pLesser.compareTo(pGreater) == 1);
 		assertTrue("Failed longevity equal test.", pGreater.compareTo(pGreater) == 1);
 		
 		//Test compareTo() using CompareByYoungest.

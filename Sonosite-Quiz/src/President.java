@@ -104,7 +104,7 @@ public class President implements Comparable<President>{
 		 * @return the age when the president died (longevity) as an int.
 		 */
 		public int getLongevity(){
-			return this.longevity;
+			return Math.abs(this.longevity);
 		}
 		
 		/**
@@ -190,6 +190,8 @@ public class President implements Comparable<President>{
 		 */
 		public void setToCompareByLongevity(){
 			this.compareByLongevity = true;
+			this.longevity = -Math.abs(longevity); //Sets longevity so that the president who lived the longest is first in the list.
+			this.presidentAgeEnter = Math.abs(presidentAgeEnter); //Resets presidentAgeEnter so its positive since we aren't comparing by longevity.
 		}
 		
 		/**
@@ -198,6 +200,8 @@ public class President implements Comparable<President>{
 		 */
 		public void setToCompareByYoungest(){
 			this.compareByLongevity = false;
+			this.longevity = Math.abs(longevity); //Resets longevity so its positive since we aren't comparing by longevity.
+			this.presidentAgeEnter = -Math.abs(presidentAgeEnter); //Sets presidentAgeEnter so that the president who was the youngest is first in the list.
 		}
 
 		@Override
@@ -211,9 +215,10 @@ public class President implements Comparable<President>{
 			} else {
 				compareValue = this.presidentAgeEnter - o.presidentAgeEnter; //If compareByLongevity == false
 			}
-			if (compareValue == 0){ //If there is a tie, break it by saying this president is greater.
+			if (compareValue < 0){
+				return -1;
+			} else {
 				return 1;
 			}
-			return compareValue;
 		}
 }
