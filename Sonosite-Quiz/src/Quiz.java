@@ -15,7 +15,7 @@ public class Quiz {
 	public static Set<PresidentBasic> presidents; //Stores the presidents we are passed.
 	
 	/**
-	 * 
+	 * Creates the .txt files and the histogram from "input.txt".
 	 * @param args
 	 * @throws NumberFormatException If the numbers for birth year and death year aren't integers.
 	 * @throws Exception If the years passed are incorrect chronologically (ex: birthYear after deathYear or yearExit before yearEntry). 
@@ -26,8 +26,9 @@ public class Quiz {
 		//Fill presidents with the presidents from input.txt.
 		presidents = new HashSet<PresidentBasic>();
 		while (input.hasNextLine()){
-			String[] currentLine = input.nextLine().split(",");
-			presidents.add(new PresidentBasic(currentLine[0], currentLine[1], Integer.parseInt(currentLine[2]), Integer.parseInt(currentLine[3]), currentLine[4], currentLine[5]));
+			
+			//Create a president object and add it to the presidents.
+			presidents.add(createPresident(input.nextLine()));
 		}
 		input.close();
 		
@@ -35,6 +36,59 @@ public class Quiz {
 		createYoungestPresident();
 		createLongevity();
 		createAMHistogram();
+	}
+	
+	/**
+	 * Creates a president from the line passed.  The line should be formatted as follows:
+	 * <first_name>,<last_name>,<birth_year>,<death_year>,<president_from_date>,<president_to_date>
+	 * 
+	 * However, if the line isn't QUITE formatted that way (but the order is correct), there is a chance
+	 * that the program can read that data.
+	 * @param currentLine The line from which the PresidentBasic is created.
+	 * @return a PresidentBasic formed from the String passed.
+	 * @throws Exception If the years passed are incorrect chronologically (ex: birthYear after deathYear or yearExit before yearEntry).
+	 */
+	public static PresidentBasic createPresident(String currentLine) throws Exception{
+		
+		//Take the line, get the firstName from it, and trim the front to the start of the next field.
+		String firstName = currentLine.substring(0, currentLine.indexOf(',')); //Store the firstName.
+		currentLine = currentLine.substring(currentLine.indexOf(',') + 1); //Trim off this field from currentLine.
+		currentLine = currentLine.trim(); //Remove all leading and trailing whitespace
+		
+		//Take the line, get the lastName from it, and trim the front to the start of the next field.
+		String lastName = currentLine.substring(0, currentLine.indexOf(',')); //Store the lastName.
+		currentLine = currentLine.substring(currentLine.indexOf(',') + 1); //Trim off this field from currentLine.
+		currentLine = currentLine.trim(); //Remove all leading and trailing whitespace
+		
+		//Take the line, get the birthYear from it, and trim the front to the start of the next field.
+		if (currentLine.charAt(0) == ','){ //Trim off the ',' character if it is present.
+			currentLine = currentLine.substring(1);
+		}
+		int birthYear = Integer.parseInt(currentLine.substring(0, 3)); //Store the birthYear.
+		currentLine = currentLine.substring(5); //Trim off this field from currentLine.
+		currentLine = currentLine.trim(); //Remove all leading and trailing whitespace
+		
+		//Take the line, get the deathYear from it, and trim the front to the start of the next field.
+		if (currentLine.charAt(0) == ','){ //Trim off the ',' character if it is present.
+			currentLine = currentLine.substring(1);
+		}
+		int deathYear = Integer.parseInt(currentLine.substring(0, 3)); //Store the deathYear.
+		currentLine = currentLine.substring(5); //Trim off this field from currentLine.
+		currentLine = currentLine.trim(); //Remove all leading and trailing whitespace
+		
+		//Take the line, get the enterYear (year the president entered office) from it, and trim the front to the start of the next field.
+		if (currentLine.charAt(0) == ','){ //Trim off the ',' character if it is present.
+			currentLine = currentLine.substring(1);
+		}
+		String enterYear = currentLine.substring(0, currentLine.indexOf(',')); //Store the year the president entered office.
+		currentLine = currentLine.substring(currentLine.indexOf(',') + 1); //Trim off this field from currentLine.
+		currentLine = currentLine.trim(); //Remove all leading and trailing whitespace
+		
+		//Stores the year the president left office.
+		String exitYear = currentLine;
+		
+		//Return a new PresidentBasic object using these fields.
+		return new PresidentBasic(firstName, lastName, birthYear, deathYear, enterYear, exitYear);
 	}
 	
 	/**
