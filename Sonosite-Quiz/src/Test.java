@@ -9,23 +9,15 @@ import java.util.Scanner;
  *
  */
 public class Test {
-
-	@org.junit.Test
-	public void test() throws Exception {
-		testQuiz();
-		testPresident();
-	}
 	
 	/**
-	 * Tests the methods in testQuiz.
+	 * Checks output with file with perfect input.
 	 * @throws NumberFormatException If the numbers for birth year and death year aren't integers for any of the presidents in the .txt files.
 	 * @throws Exception If the years passed are incorrect chronologically (ex: birthYear after deathYear or yearExit before yearEntry) in any of the .txt files. 
 	 */
-	public static void testQuiz() throws NumberFormatException, Exception{
+	@org.junit.Test
+	public void testPerfectInput() throws NumberFormatException, Exception{
 		
-		/**
-		 * Checks output with file with perfect input.
-		 */
 		String[] args = new String[1];
 		args[0] = "src/perfect_input.txt";
 		Quiz.main(args);
@@ -62,25 +54,71 @@ public class Test {
 			lineNumber++;
 		}
 		lineNumber = 0;
+	}
+	
+	/**
+	 * Checks output with file with sloppy input (input.txt).
+	 * @throws NumberFormatException If the numbers for birth year and death year aren't integers for any of the presidents in the .txt files.
+	 * @throws Exception If the years passed are incorrect chronologically (ex: birthYear after deathYear or yearExit before yearEntry) in any of the .txt files. 
+	 */
+	@org.junit.Test
+	public void testSloppyInput() throws NumberFormatException, Exception{
 		
-		/**
-		 * Checks output with file with sloppy input (input.txt).
-		 */
+		String[] args = new String[1];
+		args[0] = "src/input.txt";
+		Quiz.main(args);
 		
-		//
+		//Compare youngest_president.txt with expected file.
+		Scanner expected = new Scanner(new File("src/youngest_sloppy.txt"));
+		Scanner actual = new Scanner(new File("youngest_president.txt"));
 		
-		/**
-		 * Checks output with file from no input.
-		 */
+		int lineNumber = 0;
+		while (expected.hasNextLine() && actual.hasNextLine()){
+			assertEquals("ERROR: CASE=SLOPPY TEST=youngest_president LINE#=" + lineNumber, expected.nextLine(), actual.nextLine());
+			lineNumber++;
+		}
+		lineNumber = 0;
 		
+		//Compare longevity.txt with expected file.
+		expected = new Scanner(new File("src/sloppy_longevity.txt"));
+		actual = new Scanner(new File("president_longevity.txt"));
+		
+		lineNumber = 0;
+		while (expected.hasNextLine() && actual.hasNextLine()){
+			assertEquals("ERROR: CASE=SLOPPY TEST=longevity LINE#=" + lineNumber, expected.nextLine(), actual.nextLine());
+			lineNumber++;
+		}
+		lineNumber = 0;
+		
+		//Compare histogram.txt with expected file.
+		expected = new Scanner(new File("src/histogram_sloppy.txt"));
+		actual = new Scanner(new File("histogram.txt"));
+		
+		lineNumber = 0;
+		while (expected.hasNextLine() && actual.hasNextLine()){
+			assertEquals("ERROR: CASE=SLOPPY TEST=HISTOGRAM LINE#=" + lineNumber, expected.nextLine(), actual.nextLine());
+			lineNumber++;
+		}
+		lineNumber = 0;
+	}
+	
+	/**
+	 * Checks output with file from no input.
+	 * @throws NumberFormatException If the numbers for birth year and death year aren't integers for any of the presidents in the .txt files.
+	 * @throws Exception If the years passed are incorrect chronologically (ex: birthYear after deathYear or yearExit before yearEntry) in any of the .txt files. 
+	 */
+	@org.junit.Test
+	public void testEmptyInput() throws NumberFormatException, Exception{
+		
+		String[] args = new String[1];
 		args[0] = "src/empty_input.txt";
 		Quiz.main(args);
 		
 		//Compare youngest_president.txt with expected file.
-		expected = new Scanner(new File("src/empty_input.txt"));
-		actual = new Scanner(new File("youngest_president.txt"));
+		Scanner expected = new Scanner(new File("src/empty_input.txt"));
+		Scanner actual = new Scanner(new File("youngest_president.txt"));
 		
-		lineNumber = 0;
+		int lineNumber = 0;
 		while (expected.hasNextLine() && actual.hasNextLine()){
 			assertEquals("ERROR: CASE=EMPTY TEST=youngest_president LINE#=" + lineNumber, expected.nextLine(), actual.nextLine());
 			lineNumber++;
@@ -99,7 +137,7 @@ public class Test {
 		lineNumber = 0;
 		
 		//Compare histogram.txt with expected file.
-		expected = new Scanner(new File("src/empty_histogram.txt"));
+		expected = new Scanner(new File("src/empty_histogram"));
 		actual = new Scanner(new File("histogram.txt"));
 		
 		lineNumber = 0;
@@ -108,19 +146,60 @@ public class Test {
 			lineNumber++;
 		}
 		lineNumber = 0;
+	}
+	
+	/**
+	 * Checks output with file from input with one president.
+	 * @throws NumberFormatException If the numbers for birth year and death year aren't integers for any of the presidents in the .txt files.
+	 * @throws Exception If the years passed are incorrect chronologically (ex: birthYear after deathYear or yearExit before yearEntry) in any of the .txt files. 
+	 */
+	@org.junit.Test
+	public void testOneLineInput() throws NumberFormatException, Exception {
 		
-		/**
-		 * Checks output with file from input with one president.
-		 */
+		String[] args = new String[1];
+		args[0] = "src/one_line_input.txt";
+		Quiz.main(args);
 		
-		//
+		//Compare youngest_president.txt with expected file.
+		Scanner expected = new Scanner(new File("src/one_line_input.txt"));
+		Scanner actual = new Scanner(new File("youngest_president.txt"));
+		
+		int lineNumber = 0;
+		while (expected.hasNextLine() && actual.hasNextLine()){
+			assertEquals("ERROR: CASE=ONE_LINE TEST=youngest_president LINE#=" + lineNumber, expected.nextLine(), actual.nextLine());
+			lineNumber++;
+		}
+		lineNumber = 0;
+		
+		//Compare longevity.txt with expected file.
+		expected = new Scanner(new File("src/empty_input.txt"));
+		actual = new Scanner(new File("president_longevity.txt"));
+		
+		lineNumber = 0;
+		while (expected.hasNextLine() && actual.hasNextLine()){
+			assertEquals("ERROR: CASE=ONE_LINE TEST=longevity LINE#=" + lineNumber, expected.nextLine(), actual.nextLine());
+			lineNumber++;
+		}
+		lineNumber = 0;
+		
+		//Compare histogram.txt with expected file.
+		expected = new Scanner(new File("src/one_line_histogram.txt"));
+		actual = new Scanner(new File("histogram.txt"));
+		
+		lineNumber = 0;
+		while (expected.hasNextLine() && actual.hasNextLine()){
+			assertEquals("ERROR: CASE=ONE_LINE TEST=HISTOGRAM LINE#=" + lineNumber, expected.nextLine(), actual.nextLine());
+			lineNumber++;
+		}
+		lineNumber = 0;
 	}
 	
 	
 	/**
 	 * Tests the methods in my President data type.
 	 */
-	public static void testPresident() throws Exception{
+	@org.junit.Test
+	public void testPresident() throws Exception{
 		
 		/**
 		 * Tests all possible "bad year" exceptions.

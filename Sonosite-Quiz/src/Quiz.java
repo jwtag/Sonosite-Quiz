@@ -197,7 +197,7 @@ public class Quiz {
 			}
 		}
 		
-		String[] histogram = new String[latestYear - earliestYear]; //Stores the histogram.
+		String[] histogram = new String[latestYear - earliestYear + 1]; //Stores the histogram.
 		
 		//Label each line of the histogram with the year it represents.
 		for (int i = 0; i < histogram.length; i++){
