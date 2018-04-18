@@ -6,7 +6,7 @@
  * compareTo method for their purposes.  Thus, to get an understanding of all of the President-type objects,
  * read through this object's code first!
  * 
- * @author John
+ * @author John Taggart
  *
  */
 public class President implements Comparable<President>{
@@ -45,8 +45,9 @@ public class President implements Comparable<President>{
 		 * @param lastName The president's last name.
 		 * @param birthYear The president's birth year (as an integer).
 		 * @param deathYear The president's death year (as an integer).
-		 * @param dateEnter The date the president entered office (as a String formatted as MM/DD/YY).
-		 * @param dateExit The date the president left office (as a String as MM/DD/YY).
+		 * @param dateEnter The date the president entered office (as a String formatted as MM/DD/YYYY).
+		 * @param dateExit The date the president left office (as a String as MM/DD/YYYY).
+		 * @requires dateEnter and dateExit to be formatted as "MM/DD/YYYY".
 		 * @throws Exception if the years passed are incorrect chronologically (ex: birthYear after deathYear or yearExit before yearEntry).
 		 */
 		public President(String firstName, String lastName, int birthYear, int deathYear, String dateEnter, String dateExit) throws Exception{
@@ -76,7 +77,7 @@ public class President implements Comparable<President>{
 			this.dateEnter = dateEnter;
 			this.dateExit = dateExit;
 			this.presidentAgeEnter = enterYear - birthYear;
-			this.presidentAgeExit = exitYear - this.presidentAgeEnter;
+			this.presidentAgeExit = exitYear - birthYear;
 			this.longevity = deathYear - birthYear;
 			this.hasAM = 0;
 			this.compareByLongevity = false;

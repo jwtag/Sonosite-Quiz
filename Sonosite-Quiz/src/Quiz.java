@@ -1,5 +1,5 @@
 /**
- * Quiz answers.
+ * My code for the quiz.
  * @author John Taggart
  *
  */
@@ -16,12 +16,18 @@ public class Quiz {
 	
 	/**
 	 * Creates the .txt files and the histogram from "input.txt".
-	 * @param args
+	 * @param args File besides "input.txt" to be read (if applicable).
 	 * @throws NumberFormatException If the numbers for birth year and death year aren't integers.
 	 * @throws Exception If the years passed are incorrect chronologically (ex: birthYear after deathYear or yearExit before yearEntry). 
 	 */
 	public static void main(String[] args) throws NumberFormatException, Exception{
-		Scanner input = new Scanner(new File("src/input.txt"));
+		String inputFile = "src/input.txt"; //The input file to be sourced from.
+		
+		if (args.length == 1){ //If the file to be read is passed in, inputFile is set to its name here.
+			inputFile = args[0];
+		}
+		
+		Scanner input = new Scanner(new File(inputFile));
 		
 		//Fill presidents with the presidents from input.txt.
 		presidents = new HashSet<President>();
@@ -43,6 +49,7 @@ public class Quiz {
 	 * 
 	 * However, if the line isn't QUITE formatted that way (but the order is correct), there is a chance
 	 * that the program can read that data.
+	 * 
 	 * @param currentLine The line from which the President is created.
 	 * @return a President formed from the String passed.
 	 * @throws Exception If the years passed are incorrect chronologically (ex: birthYear after deathYear or yearExit before yearEntry).
