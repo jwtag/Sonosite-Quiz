@@ -7,9 +7,9 @@ import java.io.*;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
-import Presidents.*;
 public class Quiz {
 	
 	public static Set<President> presidents; //Stores the presidents we are passed.
@@ -155,10 +155,80 @@ public class Quiz {
 	}
 	
 	/**
-	 * Creates the AM Histogram.
+	 * Creates the AM/MA Histogram. and outputs it to "histogram.txt".
+	 * @throws Exception If hasAM() malfunctioned in its operations.  Consult the method declaration in President.java for more details.
 	 */
-	public static void createAMHistogram(){
+	public static void createAMHistogram() throws Exception{
+		boolean firstPresidentRead = true; //If the current President being read is the first president read into the program.
 		
+		int earliestYear = 0; //The earliest year on the histogram.
+		
+		int latestYear = 0; //The latest year on the histogram.
+		
+		/**
+		 * A Map of when each AM/MA President took office, with the keys being the years they took office, and the values being the president.
+		 */
+		TreeMap<Integer, President> AMPresidents = new TreeMap<Integer, President>();
+		
+		//Goes through presidents and adds each AM/MA President to AMPresidents
+		for (President p : presidents){
+			
+			//Update the start and end years for the histogram as necessary.
+			if (p.getEnterYear() < earliestYear){
+				earliestYear = p.getEnterYear();
+			}
+			if (p.getExitYear() > latestYear){
+				latestYear = p.getExitYear();
+			}
+			if (firstPresidentRead){ //If this is the first president read into the program, register it's entry and exit years as the earliestYear and latestYear.
+				earliestYear = p.getEnterYear();
+				latestYear = p.getExitYear();
+				firstPresidentRead = false;
+			}
+			if (p.hasAM()){ //If p has 'AM'/'MA', add it to AMPresidents.
+				AMPresidents.put(p.getEnterYear(), p);
+			}
+		}
+		
+		String[] histogram = new String[latestYear - earliestYear]; //Stores the histogram.
+		
+		//Label each line of the histogram with the year it represents.
+		for (int i = 0; i < histogram.length; i++){
+			histogram[i] = (earliestYear + i) + "\t";
+		}
+		
+		/**
+		 * Since AMPresidents is stored in a TreeMap, the Presidents are sorted by the year they entered office.
+		 * Thus, we can easily create a histogram with labels of when they entered office.  Below we loop through
+		 * AMPresidents, and we add a star to the Strings corresponding with every year after each president who had
+		 * an "AM"/"MA" in their name entered office.  The years where Presidents with an "AM"/"MA" in their name 
+		 * entered office are labeled with the year they entered office and their name.
+		 */
+		for (Integer year : AMPresidents.keySet()){
+			for (int i = year - earliestYear; i < histogram.length; i++){ //Add a star to all years following the starting year.
+				histogram[i] += '*';
+			}
+			//Add the presidents name as a label.
+			histogram[year - earliestYear] += " - President " + AMPresidents.get(year).getFirstName() + " " + AMPresidents.get(year).getLastName();
+		}
+		
+		//Create the "histogram.txt" file.
+		PrintStream output = new PrintStream(new FileOutputStream(new File("histogram.txt")));
+		
+		//Set the System to print to "output".
+		System.setOut(output);
+		
+		System.out.println("Starting year: " + earliestYear + "\n");
+		
+		//Output the histogram of "AM"/"MA" Presidents (stored in the String[]) to "histogram.txt"
+		for (int i = 0; i < histogram.length; i++){
+			System.out.println(histogram[i]);
+		}
+		
+		System.out.print("\nLast year: " + latestYear);
+		
+		//Reset the System's PrintStream to the console.
+		System.setOut(System.out);
 	}
 	
 }

@@ -32,6 +32,8 @@ public class President implements Comparable<President>{
 							* 	  Have this value returned to them.
 							* 1 = Has an 'AM' or 'MA' pair.
 							*/
+		private int enterYear; //The integer value for the year that the president entered office.
+		private int exitYear; //The integer value for the year that the president left office.
 		private boolean compareByLongevity; /*
 									         * If this is set to true, compareTo operates based upon longevity.  Otherwise, compareTo compares
 									         * based on presidentAgeEnter.  When a PresidentBasic is initialized, it is set to false.
@@ -50,19 +52,22 @@ public class President implements Comparable<President>{
 		public President(String firstName, String lastName, int birthYear, int deathYear, String dateEnter, String dateExit) throws Exception{
 			
 			//Obtain the Integer values for the years the president entered and exited office.
-			int yearEnter = Integer.parseInt((dateEnter.split("/")[2]).trim());
-			int yearExit = Integer.parseInt((dateExit.split("/")[2]).trim());
+			this.enterYear = Integer.parseInt((dateEnter.split("/")[2]).trim());
+			this.exitYear = Integer.parseInt((dateExit.split("/")[2]).trim());
 			
 			//Check that the years are valid (no odd ordering).
 			if (birthYear >= deathYear){
-				throw new Exception("The birth year of the president must be less than the death year.");
-			}  else if (yearExit < yearEnter){
-				throw new Exception("The year the president left office must be greater than or equal to when he entered office.");
-			}  else if (deathYear < yearExit){
+				throw new Exception("The birth year of the president must be less than the death year.\n"
+						+ "Birth : " + birthYear + "\nDeath : " + deathYear + "\nFirst/Last name : " + firstName + "/" + lastName);
+			}  else if (exitYear < enterYear){
+				throw new Exception("The year the president left office must be greater than or equal to when he entered office.\n"
+						+ "Enter : " + enterYear + "\nExit : " + exitYear + "\nFirst/Last name : " + firstName + "/" + lastName);
+			}  else if (deathYear < exitYear){
 				throw new Exception("The death year of the president must be greater than or equal to the year he left office.\n"
-						+ "Death : " + deathYear + "\nExit : " + yearExit + "\nName : " + firstName);
-			} else if (birthYear > yearEnter){
-				throw new Exception("The president must be born before he entered office.");
+						+ "Death : " + deathYear + "\nExit : " + exitYear + "\nFirst/Last name : " + firstName + "/" + lastName);
+			} else if (birthYear > enterYear){
+				throw new Exception("The president must be born before he entered office.\n"
+						+ "Birth : " + birthYear + "\nEnter : " + enterYear + "\nFirst/Last name : " + firstName + "/" + lastName);
 			}
 			this.firstName = firstName;
 			this.lastName = lastName;
@@ -70,8 +75,8 @@ public class President implements Comparable<President>{
 			this.deathYear = deathYear;
 			this.dateEnter = dateEnter;
 			this.dateExit = dateExit;
-			this.presidentAgeEnter = yearEnter - birthYear;
-			this.presidentAgeExit = yearExit - this.presidentAgeEnter;
+			this.presidentAgeEnter = enterYear - birthYear;
+			this.presidentAgeExit = exitYear - this.presidentAgeEnter;
 			this.longevity = deathYear - birthYear;
 			this.hasAM = 0;
 			this.compareByLongevity = false;
@@ -115,6 +120,22 @@ public class President implements Comparable<President>{
 		 */
 		public int getPresidentAgeExit(){
 			return this.presidentAgeExit;
+		}
+		
+		/**
+		 * Returns the year when the president entered office.
+		 * @return the year when the president entered office as an int.
+		 */
+		public int getEnterYear(){
+			return this.enterYear;
+		}
+		
+		/**
+		 * Returns the year when the president left office.
+		 * @return the year when the president left office as an int.
+		 */
+		public int getExitYear(){
+			return this.exitYear;
 		}
 		
 		/**
@@ -183,9 +204,15 @@ public class President implements Comparable<President>{
 		 * NOTE: YOU SHOULD USE THE "COMPAREBYYOUNGEST()" OR "COMPAREBYLONGEVITY()" METHODS BEFORE DOING ANY COMPARISON USING COMPARETO()!!!
 		 */
 		public int compareTo(President o) {
+			int compareValue = 0;
 			if (this.compareByLongevity){ //If compareByLongevity == true
-				return this.longevity - o.longevity;
+				compareValue = this.longevity - o.longevity;
+			} else {
+				compareValue = this.presidentAgeEnter - o.presidentAgeEnter; //If compareByLongevity == false
 			}
-			return this.presidentAgeEnter - o.presidentAgeEnter; //If compareByLongevity == false
+			if (compareValue == 0){ //If there is a tie, break it by saying this president is greater.
+				return 1;
+			}
+			return compareValue;
 		}
 }
