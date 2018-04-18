@@ -1,4 +1,4 @@
-package Presidents;
+
 /**
  * Base class for president objects. Stores the basic data we use to sort presidents in Quiz.java.  Also
  * calculates the values for the various fields we store in President-type objects.
@@ -9,7 +9,7 @@ package Presidents;
  * @author John
  *
  */
-public class PresidentBasic {
+public class President implements Comparable<President>{
 		
 		//These fields are private to guarantee the client cannot modify them in unintended ways.
 	
@@ -32,6 +32,10 @@ public class PresidentBasic {
 							* 	  Have this value returned to them.
 							* 1 = Has an 'AM' or 'MA' pair.
 							*/
+		private boolean compareByLongevity; /*
+									         * If this is set to true, compareTo operates based upon longevity.  Otherwise, compareTo compares
+									         * based on presidentAgeEnter.  When a PresidentBasic is initialized, it is set to false.
+									         */
 		
 		/**
 		 * Constructor for PresidentBasic objects.  Use this constructor for general flexibility.
@@ -43,11 +47,11 @@ public class PresidentBasic {
 		 * @param dateExit The date the president left office (as a String as MM/DD/YY).
 		 * @throws Exception if the years passed are incorrect chronologically (ex: birthYear after deathYear or yearExit before yearEntry).
 		 */
-		public PresidentBasic(String firstName, String lastName, int birthYear, int deathYear, String dateEnter, String dateExit) throws Exception{
+		public President(String firstName, String lastName, int birthYear, int deathYear, String dateEnter, String dateExit) throws Exception{
 			
 			//Obtain the Integer values for the years the president entered and exited office.
-			int yearEnter = Integer.parseInt((dateEnter.split("/")[2]));
-			int yearExit = Integer.parseInt((dateExit.split("/")[2]));
+			int yearEnter = Integer.parseInt((dateEnter.split("/")[2]).trim());
+			int yearExit = Integer.parseInt((dateExit.split("/")[2]).trim());
 			
 			//Check that the years are valid (no odd ordering).
 			if (birthYear >= deathYear){
@@ -55,7 +59,8 @@ public class PresidentBasic {
 			}  else if (yearExit < yearEnter){
 				throw new Exception("The year the president left office must be greater than or equal to when he entered office.");
 			}  else if (deathYear < yearExit){
-				throw new Exception("The death year of the president must be greater than or equal to the year he left office.");
+				throw new Exception("The death year of the president must be greater than or equal to the year he left office.\n"
+						+ "Death : " + deathYear + "\nExit : " + yearExit + "\nName : " + firstName);
 			} else if (birthYear > yearEnter){
 				throw new Exception("The president must be born before he entered office.");
 			}
@@ -69,6 +74,7 @@ public class PresidentBasic {
 			this.presidentAgeExit = yearExit - this.presidentAgeEnter;
 			this.longevity = deathYear - birthYear;
 			this.hasAM = 0;
+			this.compareByLongevity = false;
 		}
 		
 		/**
@@ -155,5 +161,31 @@ public class PresidentBasic {
 		 */
 		public String toString(){
 			return this.firstName + "," + this.lastName + "," + this.birthYear + "," + this.deathYear + "," + this.dateEnter + "," + this.dateExit;
+		}
+		
+		/**
+		 * Sets the object's compareTo() method to use the longevity field.  YOU SHOULD USE THIS METHOD BEFORE COMPARING LONGEVITIES.
+		 */
+		public void setToCompareByLongevity(){
+			this.compareByLongevity = true;
+		}
+		
+		/**
+		 * Sets the object's compareTo() method to use the presidentAgeEnter field (used for sorting youngest_president.txt).  
+		 * YOU SHOULD USE THIS METHOD BEFORE COMPARING PRESIDENTAGEENTER.
+		 */
+		public void setToCompareByYoungest(){
+			this.compareByLongevity = false;
+		}
+
+		@Override
+		/**
+		 * NOTE: YOU SHOULD USE THE "COMPAREBYYOUNGEST()" OR "COMPAREBYLONGEVITY()" METHODS BEFORE DOING ANY COMPARISON USING COMPARETO()!!!
+		 */
+		public int compareTo(President o) {
+			if (this.compareByLongevity){ //If compareByLongevity == true
+				return this.longevity - o.longevity;
+			}
+			return this.presidentAgeEnter - o.presidentAgeEnter; //If compareByLongevity == false
 		}
 }
