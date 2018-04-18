@@ -11,6 +11,22 @@ import java.util.Scanner;
 public class Test {
 	
 	/**
+	 * 
+	 * 
+	 * -------------------------------------------------------------------------------------------
+	 * 
+	 * 
+	 * 
+	 * TESTS BELOW ARE FOR QUIZ.JAVA.
+	 * 
+	 * 
+	 * 
+	 * -------------------------------------------------------------------------------------------
+	 * 
+	 * 
+	 */
+	
+	/**
 	 * Checks output with file with perfect input.
 	 * @throws NumberFormatException If the numbers for birth year and death year aren't integers for any of the presidents in the .txt files.
 	 * @throws Exception If the years passed are incorrect chronologically (ex: birthYear after deathYear or yearExit before yearEntry) in any of the .txt files. 
@@ -194,19 +210,29 @@ public class Test {
 		lineNumber = 0;
 	}
 	
+	/**
+	 * 
+	 * 
+	 * -------------------------------------------------------------------------------------------
+	 * 
+	 * 
+	 * 
+	 * TESTS BELOW ARE FOR THE PRESIDENT OBJECT.
+	 * 
+	 * 
+	 * 
+	 * -------------------------------------------------------------------------------------------
+	 * 
+	 * 
+	 */
+	
 	
 	/**
-	 * Tests the methods in my President data type.
+	 * Tests all possible "bad year" exceptions.
 	 */
 	@org.junit.Test
-	public void testPresident() throws Exception{
-		
-		/**
-		 * Tests all possible "bad year" exceptions.
-		 */
-		
+	public void testExceptions(){
 		boolean exceptionThrown = false;
-		
 		//Birth > Death case.
 		try {
 			President p = new President("a", "b", 1002, 1001, "1/1/1000", "1/1/1001");
@@ -242,10 +268,15 @@ public class Test {
 		}
 		assertTrue("Failed the entry year >= birth case.", exceptionThrown);
 		exceptionThrown = false;
-				
-		/**
-		 * Tests "get-" functions and toString().
-		 */
+	}
+	
+	/**
+	 * Tests "get-" functions and toString().
+	 * @throws Exception If the years passed are incorrect chronologically (ex: birthYear after deathYear or yearExit before yearEntry) in any of the .txt files. 
+	 */
+	@org.junit.Test
+	public void testGetFunctions() throws Exception{
+		
 		
 		//Create test President object.
 		President p = new President("a", "b", 0, 10, "1/1/0001", "1/1/0009");
@@ -273,13 +304,17 @@ public class Test {
 		
 		//Test toString()
 		assertEquals("Failed the toString() test.", "a,b,0,10,1/1/0001,1/1/0009", p.toString());
-
-		/**
-		 * Tests "hasAM".
-		 */
+	}
+	
+	/**
+	 * Tests the hasAM() function.
+	 * @throws Exception If the years passed are incorrect chronologically (ex: birthYear after deathYear or yearExit before yearEntry) in any of the .txt files. 
+	 */
+	@org.junit.Test
+	public void hasAMTests() throws Exception{
 		
 		//Test "am" case.
-		p = new President("am", "b", 0, 10, "1/1/0001", "1/1/0009");
+		President p = new President("am", "b", 0, 10, "1/1/0001", "1/1/0009");
 		assertTrue("Failed the \"am\" test", p.hasAM());
 		
 		//Test "ma" case.
@@ -318,10 +353,14 @@ public class Test {
 		p = new President("m", "a", 0, 10, "1/1/0001", "1/1/0009");
 		assertTrue("Failed the \"m\" as first name \"a\" as last name case. test", !p.hasAM());
 		
+	}
+	
+	/**
+	 * Tests the compareTo() method.
+	 */
+	@org.junit.Test
+	public void testCompareTo() throws Exception{
 		
-		/**
-		 * Tests compareTo().
-		 */
 		President pGreater = new President("a", "b", 0, 10000, "1/1/0001", "1/1/1009"); //Greater in every way than pLesser.
 		President pLesser = new President("a", "b", 5, 10, "1/1/0008", "1/1/0009"); //Lesser in every way than pGreater.
 		
