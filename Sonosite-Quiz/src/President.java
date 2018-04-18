@@ -191,7 +191,6 @@ public class President implements Comparable<President>{
 		public void setToCompareByLongevity(){
 			this.compareByLongevity = true;
 			this.longevity = -Math.abs(longevity); //Sets longevity so that the president who lived the longest is first in the list.
-			this.presidentAgeEnter = Math.abs(presidentAgeEnter); //Resets presidentAgeEnter so its positive since we aren't comparing by longevity.
 		}
 		
 		/**
@@ -201,7 +200,6 @@ public class President implements Comparable<President>{
 		public void setToCompareByYoungest(){
 			this.compareByLongevity = false;
 			this.longevity = Math.abs(longevity); //Resets longevity so its positive since we aren't comparing by longevity.
-			this.presidentAgeEnter = -Math.abs(presidentAgeEnter); //Sets presidentAgeEnter so that the president who was the youngest is first in the list.
 		}
 
 		@Override

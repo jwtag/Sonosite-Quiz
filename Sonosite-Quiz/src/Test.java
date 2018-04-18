@@ -1,5 +1,8 @@
 import static org.junit.Assert.*;
 
+import java.io.File;
+import java.util.Scanner;
+
 /**
  * Contains tests for my code for the Sonosite Quiz.
  * @author John Taggart
@@ -15,14 +18,50 @@ public class Test {
 	
 	/**
 	 * Tests the methods in testQuiz.
+	 * @throws NumberFormatException If the numbers for birth year and death year aren't integers for any of the presidents in the .txt files.
+	 * @throws Exception If the years passed are incorrect chronologically (ex: birthYear after deathYear or yearExit before yearEntry) in any of the .txt files. 
 	 */
-	public static void testQuiz(){
+	public static void testQuiz() throws NumberFormatException, Exception{
 		
 		/**
 		 * Checks output with file with perfect input.
 		 */
+		String[] args = new String[1];
+		args[0] = "src/perfect_input.txt";
+		Quiz.main(args);
 		
-		//
+		//Compare president_youngest.txt with expected file.
+		Scanner expected = new Scanner(new File("src/perfect_input.txt"));
+		Scanner actual = new Scanner(new File("youngest_president.txt"));
+		
+		int lineNumber = 0;
+		while (expected.hasNextLine() && actual.hasNextLine()){
+			assertEquals("ERROR: CASE=PERFECT TEST=youngest_president LINE#=" + lineNumber, expected.nextLine(), actual.nextLine());
+			lineNumber++;
+		}
+		lineNumber = 0;
+		
+		//Compare longevity.txt with expected file.
+		expected = new Scanner(new File("src/perfect_input.txt"));
+		actual = new Scanner(new File("president_longevity.txt"));
+		
+		lineNumber = 0;
+		while (expected.hasNextLine() && actual.hasNextLine()){
+			assertEquals("ERROR: CASE=PERFECT TEST=longevity LINE#=" + lineNumber, expected.nextLine(), actual.nextLine());
+			lineNumber++;
+		}
+		lineNumber = 0;
+		
+		//Compare histogram.txt with expected file.
+		expected = new Scanner(new File("src/perfect_histogram"));
+		actual = new Scanner(new File("histogram.txt"));
+		
+		lineNumber = 0;
+		while (expected.hasNextLine() && actual.hasNextLine()){
+			assertEquals("ERROR: CASE=PERFECT TEST=HISTOGRAM LINE#=" + lineNumber, expected.nextLine(), actual.nextLine());
+			lineNumber++;
+		}
+		lineNumber = 0;
 		
 		/**
 		 * Checks output with file with sloppy input (input.txt).
@@ -34,7 +73,41 @@ public class Test {
 		 * Checks output with file from no input.
 		 */
 		
-		//
+		args[0] = "src/empty_input.txt";
+		Quiz.main(args);
+		
+		//Compare youngest_president.txt with expected file.
+		expected = new Scanner(new File("src/empty_input.txt"));
+		actual = new Scanner(new File("youngest_president.txt"));
+		
+		lineNumber = 0;
+		while (expected.hasNextLine() && actual.hasNextLine()){
+			assertEquals("ERROR: CASE=EMPTY TEST=youngest_president LINE#=" + lineNumber, expected.nextLine(), actual.nextLine());
+			lineNumber++;
+		}
+		lineNumber = 0;
+		
+		//Compare longevity.txt with expected file.
+		expected = new Scanner(new File("src/empty_input.txt"));
+		actual = new Scanner(new File("president_longevity.txt"));
+		
+		lineNumber = 0;
+		while (expected.hasNextLine() && actual.hasNextLine()){
+			assertEquals("ERROR: CASE=EMPTY TEST=longevity LINE#=" + lineNumber, expected.nextLine(), actual.nextLine());
+			lineNumber++;
+		}
+		lineNumber = 0;
+		
+		//Compare histogram.txt with expected file.
+		expected = new Scanner(new File("src/empty_histogram.txt"));
+		actual = new Scanner(new File("histogram.txt"));
+		
+		lineNumber = 0;
+		while (expected.hasNextLine() && actual.hasNextLine()){
+			assertEquals("ERROR: CASE=EMPTY TEST=HISTOGRAM LINE#=" + lineNumber, expected.nextLine(), actual.nextLine());
+			lineNumber++;
+		}
+		lineNumber = 0;
 		
 		/**
 		 * Checks output with file from input with one president.
@@ -183,8 +256,8 @@ public class Test {
 		//Test compareTo() using CompareByYoungest.
 		pGreater.setToCompareByYoungest();
 		pLesser.setToCompareByYoungest();
-		assertTrue("Failed CompareByYoungest true test.", pGreater.compareTo(pLesser) == 1);
-		assertTrue("Failed CompareByYoungest false test.", pLesser.compareTo(pGreater) == -1);
+		assertTrue("Failed CompareByYoungest true test.", pGreater.compareTo(pLesser) == -1);
+		assertTrue("Failed CompareByYoungest false test.", pLesser.compareTo(pGreater) == 1);
 		assertTrue("Failed CompareByYoungest equal test.", pGreater.compareTo(pGreater) == 1);
 	}
 
